@@ -1,7 +1,7 @@
 
 # Image File Conversion/Resize Tool
 
-This tool, developed by Jared Bruni, is designed for converting and resizing image files. It leverages the power of OpenCV to handle various image operations efficiently. This utility allows for batch processing of images, resizing based on specified dimensions, and supports multiple input and output formats.
+This tool is designed for converting and resizing image files. It leverages the power of OpenCV to handle various image operations efficiently. This utility allows for batch processing of images, resizing based on specified dimensions, and supports multiple input and output formats.
 
 ## Features
 
