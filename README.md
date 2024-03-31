@@ -23,9 +23,21 @@ To use this tool, you must have OpenCV installed on your system. After ensuring 
 2. Compile the source code using a C++ compiler, ensuring the OpenCV library is correctly linked. For example:
 
 ```bash
-make
+make -f Makefile.ux
 sudo make install
+
 ```
+
+or
+
+```bash
+mkdir build && cd build
+cmake ..
+make -j6
+sudo make install
+
+```
+
 
 ## Usage
 
