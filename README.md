@@ -3,6 +3,10 @@
 
 This tool is designed for converting and resizing image files. It leverages the power of OpenCV to handle various image operations efficiently. This utility allows for batch processing of images, resizing based on specified dimensions, and supports multiple input and output formats.
 
+
+## Motivation
+To quickly and easily convert between formats and resolutions with a terminal program.  Also to mass convert and resize large amounts of files.
+
 ## Features
 
 - Convert image files between different formats.
