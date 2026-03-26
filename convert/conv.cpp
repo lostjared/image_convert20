@@ -17,7 +17,7 @@
 
 namespace fs = std::filesystem;
 
-bool convertFiles(const std::vector<fs::path> &list_files, std::string_view output, int width, int height);
+bool convertFiles(const std::vector<fs::path> &list_files, std::string_view output, int width, int height, int quality);
 
 int main(int argc, char **argv) {
 	Argz<std::string> argz;
@@ -26,10 +26,12 @@ int main(int argc, char **argv) {
 		.addOptionSingleValue('f', "image file input")
 		.addOptionSingleValue('o', "output file format")
 		.addOptionSingleValue('s', "scale resolution formst: WithxHeight")
+		.addOptionSingleValue('q', "JPEG quality.")
 		.addOptionDoubleValue('I', "input", "input file")
 		.addOptionDoubleValue('O', "output", "output format")
 		.addOptionDoubleValue('S', "size", "scale resolution")
-		.addOptionDoubleValue('F', "file", "input image file");
+		.addOptionDoubleValue('F', "file", "input image file")
+		.addOptionDoubleValue('Q', "quality", "JPEG quality");
 
 	if(argc == 1) {
 		argz.help(std::cout);
@@ -39,7 +41,7 @@ int main(int argc, char **argv) {
 	fs::path input_file;
 	fs::path image_file;
 	std::string output_format, image_size;
-
+	int quality = 100;
 	try {
 		int value{};
 		Argument<std::string> arg;
@@ -60,6 +62,10 @@ int main(int argc, char **argv) {
 			case 'f':
 			case 'F':
 				image_file = fs::path(arg.arg_value);
+				break;
+			case 'Q':
+			case 'q':
+				quality = strtol(arg.arg_value.c_str(), nullptr, 0);
 				break;
 			}
 		}
@@ -107,13 +113,14 @@ int main(int argc, char **argv) {
 			const std::string left = image_size.substr(0, pos);
 			const std::string right = image_size.substr(pos + 1);
 
-			if(convertFiles(list_files, output_format, std::atoi(left.c_str()), std::atoi(right.c_str()))) {
+			if(convertFiles(list_files, output_format, std::atoi(left.c_str()), std::atoi(right.c_str()), quality))	{
+
 				std::cout << "image_convert: success.\n";
 			} else {
 				std::cout << "image_convert: failed.\n";
 			}
 		} else {
-			if(convertFiles(list_files, output_format, -1, -1)) {
+			if(convertFiles(list_files, output_format, -1, -1, quality)) {
 				std::cout << "image_convert: success.\n";
 			} else {
 				std::cout << "image_convert: failed.\n";
@@ -126,14 +133,17 @@ int main(int argc, char **argv) {
 	return 0;
 }
 
-bool convertFiles(const std::vector<fs::path> &list_files, std::string_view output, int width, int height) {
+bool convertFiles(const std::vector<fs::path> &list_files, std::string_view output, int width, int height, int quality) {
 	if(width == 0 || height == 0) {
 		std::cerr << "invalid width/height\n";
 		return false;
 	}
-
 	int converted{0};
-
+	std::string lower;
+	for(auto &i : output) {
+		lower += tolower(i);
+	}
+	std::string output_type = lower;
 	for(const auto &input_path : list_files) {
 		if(!input_path.has_filename())
 			continue;
@@ -159,16 +169,33 @@ bool convertFiles(const std::vector<fs::path> &list_files, std::string_view outp
 		if(fs::absolute(input_path) == fs::absolute(out_path))
 			continue;
 
-		std::cout << input_path << " -> " << out_path << "\n";
+		if(output_type == "jpg")
+			std::cout << input_path << " -> " << out_path << " quality: " << quality << " \n";
+		else
+			std::cout << input_path << " -> " << out_path << "\n";
 
 		try {
 			if(width != -1 && height != -1) {
 				cv::Mat resized;
 				cv::resize(inputf, resized, cv::Size(width, height));
-				cv::imwrite(out_path.string(), resized);
+				if(output_type == "jpg") {
+					std::vector<int> compression_params = {
+      					  cv::IMWRITE_JPEG_QUALITY,
+					  quality
+					};
+					cv::imwrite(out_path.string(), resized, compression_params);
+				} else {
+					cv::imwrite(out_path.string(), resized);
+				}
 				++converted;
 			} else {
-				cv::imwrite(out_path.string(), inputf);
+				if(output_type == "jpg") {
+					std::vector<int> compression_params = {
+					        cv::IMWRITE_JPEG_QUALITY, 
+				        	quality
+					};
+					cv::imwrite(out_path.string(), inputf, compression_params);
+				} else cv::imwrite(out_path.string(), inputf);
 				++converted;
 			}
 		} catch(...) {
