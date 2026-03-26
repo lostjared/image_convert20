@@ -19,8 +19,8 @@ std::vector<fs::path> loadInputList(const fs::path &inputFile, std::string &erro
     std::string line;
     while (std::getline(file, line)) {
         if (!line.empty()) {
-	    auto pos = inputFile.string().rfind("/");
-	    std::string path = inputFile.string().substr(0, pos);
+            auto pos = inputFile.string().rfind("/");
+            std::string path = inputFile.string().substr(0, pos);
             list.emplace_back(path + "/" + line);
         }
     }

@@ -12,16 +12,16 @@ class QTextEdit;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
-public:
+  public:
     explicit MainWindow(QWidget *parent = nullptr);
 
-private slots:
+  private slots:
     void browseListFile();
     void browseImageFile();
     void runConversion();
     void updateResizeState();
 
-private:
+  private:
     QLineEdit *listFileEdit;
     QLineEdit *imageFileEdit;
     QComboBox *outputFormatBox;
@@ -34,4 +34,3 @@ private:
 };
 
 #endif
-
