@@ -51,14 +51,11 @@ The tool is used through the command line, with several options available for sp
 Usage: image_convert [options]
 
 Options:
-  -i, --input file       Specify an input file list.
-  -f, --image file input Specify a single image file for input.
-  -o, --output file format Specify the output file format (e.g., jpg, png).
-  -s, --scale resolution Specify the scale resolution in the format WidthxHeight (e.g., 800x600).
-  -I, --input            Alternative way to specify an input file.
-  -O, --output           Alternative way to specify output format.
-  -S, --size             Alternative way to specify scale resolution.
-  -F, --file             Alternative way to specify a single image file input.
+  -i, --input       file       Specify an input file list.
+  -f, --image       file input Specify a single image file for input.
+  -o, --output      file format Specify the output file format (e.g., jpg, png).
+  -s, --scale       resolution Specify the scale resolution in the format WidthxHeight (e.g., 800x600).
+  -q, --quality     level of compression for JPEG range 0-100.
 ```
 
 ### Examples
