@@ -76,6 +76,11 @@ int main(int argc, char **argv) {
 			return 0;
 		}
 
+		if(!(quality >= 0 && quality <= 100)) {
+			std::cerr << "Error quality of range, must be between 0-100.\n";
+			return 0;
+		}
+
 		if(input_file.empty() && image_file.empty()) {
 			std::cerr << "Error missing input file/list...\n";
 			argz.help(std::cout);
