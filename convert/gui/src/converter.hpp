@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CONVERTER_H
+#define CONVERTER_H
 
 #include <filesystem>
 #include <string>
@@ -21,3 +22,5 @@ struct ConvertResult {
 
 ConvertResult convertFiles(const ConvertOptions &options);
 std::vector<std::filesystem::path> loadInputList(const std::filesystem::path &inputFile, std::string &error);
+
+#endif

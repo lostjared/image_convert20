@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MAINWINDOW_H
+#define MAINWINODW_H
 
 #include <QMainWindow>
 
@@ -31,3 +32,6 @@ private:
     QTextEdit *logEdit;
     QPushButton *convertButton;
 };
+
+#endif
+
